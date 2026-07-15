@@ -1,0 +1,134 @@
+{
+  "pose_1_pranamasana": {
+    "description": "Prayer Pose",
+    "left_elbow": 170,
+    "right_elbow": 170,
+    "left_shoulder": 175,
+    "right_shoulder": 175,
+    "left_knee": 175,
+    "right_knee": 175,
+    "left_hip": 175,
+    "right_hip": 175
+  },
+  "pose_2_hasta_uttanasana": {
+    "description": "Raised Arms Pose",
+    "left_elbow": 170,
+    "right_elbow": 170,
+    "left_shoulder": 60,
+    "right_shoulder": 60,
+    "left_knee": 175,
+    "right_knee": 175,
+    "left_hip": 160,
+    "right_hip": 160
+  },
+  "pose_3_hasta_padasana": {
+    "description": "Standing Forward Bend",
+    "left_elbow": 160,
+    "right_elbow": 160,
+    "left_shoulder": 60,
+    "right_shoulder": 60,
+    "left_knee": 170,
+    "right_knee": 170,
+    "left_hip": 60,
+    "right_hip": 60
+  },
+  "pose_4_ashwa_sanchalanasana": {
+    "description": "Equestrian Pose",
+    "left_elbow": 170,
+    "right_elbow": 170,
+    "left_shoulder": 175,
+    "right_shoulder": 175,
+    "left_knee": 90,
+    "right_knee": 170,
+    "left_hip": 90,
+    "right_hip": 160
+  },
+  "pose_5_dandasana": {
+    "description": "Stick Pose",
+    "left_elbow": 175,
+    "right_elbow": 175,
+    "left_shoulder": 80,
+    "right_shoulder": 80,
+    "left_knee": 175,
+    "right_knee": 175,
+    "left_hip": 175,
+    "right_hip": 175
+  },
+  "pose_6_ashtanga_namaskara": {
+    "description": "Eight Limbed Pose",
+    "left_elbow": 90,
+    "right_elbow": 90,
+    "left_shoulder": 45,
+    "right_shoulder": 45,
+    "left_knee": 90,
+    "right_knee": 90,
+    "left_hip": 175,
+    "right_hip": 175
+  },
+  "pose_7_bhujangasana": {
+    "description": "Cobra Pose",
+    "left_elbow": 150,
+    "right_elbow": 150,
+    "left_shoulder": 50,
+    "right_shoulder": 50,
+    "left_knee": 175,
+    "right_knee": 175,
+    "left_hip": 160,
+    "right_hip": 160
+  },
+  "pose_8_adho_mukha_svanasana": {
+    "description": "Downward Dog",
+    "left_elbow": 175,
+    "right_elbow": 175,
+    "left_shoulder": 60,
+    "right_shoulder": 60,
+    "left_knee": 175,
+    "right_knee": 175,
+    "left_hip": 60,
+    "right_hip": 60
+  },
+  "pose_9_ashwa_sanchalanasana_2": {
+    "description": "Equestrian Pose (other side)",
+    "left_elbow": 170,
+    "right_elbow": 170,
+    "left_shoulder": 175,
+    "right_shoulder": 175,
+    "left_knee": 170,
+    "right_knee": 90,
+    "left_hip": 160,
+    "right_hip": 90
+  },
+  "pose_10_hasta_padasana_2": {
+    "description": "Standing Forward Bend (return)",
+    "left_elbow": 160,
+    "right_elbow": 160,
+    "left_shoulder": 60,
+    "right_shoulder": 60,
+    "left_knee": 170,
+    "right_knee": 170,
+    "left_hip": 60,
+    "right_hip": 60
+  },
+  "pose_11_hasta_uttanasana_2": {
+    "description": "Raised Arms Pose (return)",
+    "left_elbow": 170,
+    "right_elbow": 170,
+    "left_shoulder": 60,
+    "right_shoulder": 60,
+    "left_knee": 175,
+    "right_knee": 175,
+    "left_hip": 160,
+    "right_hip": 160
+  },
+  "pose_12_pranamasana_2": {
+    "description": "Prayer Pose (return)",
+    "left_elbow": 170,
+    "right_elbow": 170,
+    "left_shoulder": 175,
+    "right_shoulder": 175,
+    "left_knee": 175,
+    "right_knee": 175,
+    "left_hip": 175,
+    "right_hip": 175
+  }
+}
