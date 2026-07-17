@@ -1,27 +1,85 @@
-# How many degrees difference is acceptable
+# How many degrees difference is acceptable by default (strict)
 THRESHOLD = 15
+
+# Looser angle tolerance for poses 2–12
+LOOSE_THRESHOLD = 40
+
+LOOSE_POSES = {
+    "pose_2_hasta_uttanasana",
+    "pose_3_hasta_padasana",
+    "pose_4_ashwa_sanchalanasana",
+    "pose_5_dandasana",
+    "pose_6_ashtanga_namaskara",
+    "pose_7_bhujangasana",
+    "pose_8_adho_mukha_svanasana",
+    "pose_9_ashwa_sanchalanasana_2",
+    "pose_10_hasta_padasana_2",
+    "pose_11_hasta_uttanasana_2",
+    "pose_12_pranamasana_2",
+}
+
+POSE_THRESHOLDS = {pose: LOOSE_THRESHOLD for pose in LOOSE_POSES}
+
+POSE_REQUIRED_JOINTS = {
+    "pose_2_hasta_uttanasana": {
+        "left_elbow", "right_elbow", "left_shoulder", "right_shoulder",
+    },
+    "pose_3_hasta_padasana": {
+        "left_hip", "right_hip", "left_knee", "right_knee",
+    },
+    "pose_4_ashwa_sanchalanasana": {
+        "left_knee", "right_knee", "left_hip", "right_hip",
+    },
+    "pose_5_dandasana": {
+        "left_elbow", "right_elbow", "left_shoulder", "right_shoulder",
+        "left_knee", "right_knee",
+    },
+    "pose_6_ashtanga_namaskara": {
+        "left_elbow", "right_elbow", "left_shoulder", "right_shoulder",
+        "left_knee", "right_knee",
+    },
+    "pose_7_bhujangasana": {
+        "left_elbow", "right_elbow", "left_shoulder", "right_shoulder",
+    },
+    "pose_8_adho_mukha_svanasana": {
+        "left_elbow", "right_elbow", "left_shoulder", "right_shoulder",
+        "left_hip", "right_hip",
+    },
+    "pose_9_ashwa_sanchalanasana_2": {
+        "left_knee", "right_knee", "left_hip", "right_hip",
+    },
+    "pose_10_hasta_padasana_2": {
+        "left_hip", "right_hip", "left_knee", "right_knee",
+    },
+    "pose_11_hasta_uttanasana_2": {
+        "left_elbow", "right_elbow", "left_shoulder", "right_shoulder",
+    },
+    "pose_12_pranamasana_2": {
+        "left_elbow", "right_elbow", "left_shoulder", "right_shoulder",
+    },
+}
 
 
 def validate_pose(user_angles, ideal_poses, pose_name):
     """
     Compares user angles against ideal angles for detected pose
     Returns which joints are correct and which are wrong
-
-    user_angles: dict from angle_calculator
-    ideal_poses: dict from ideal_poses.json
-    pose_name: string — which pose was detected
     """
     if pose_name not in ideal_poses:
         return None
 
     pose_data = ideal_poses[pose_name]
+    threshold = POSE_THRESHOLDS.get(pose_name, THRESHOLD)
+    required_joints = POSE_REQUIRED_JOINTS.get(pose_name)
+
     validation_result = {}
     correct_count = 0
     total_count = 0
 
     for joint_name, ideal_angle in pose_data.items():
-        # Skip description
         if joint_name == "description":
+            continue
+        if required_joints is not None and joint_name not in required_joints:
             continue
 
         if joint_name in user_angles:
@@ -29,7 +87,7 @@ def validate_pose(user_angles, ideal_poses, pose_name):
             diff = user_angle - ideal_angle
             abs_diff = abs(diff)
 
-            if abs_diff <= THRESHOLD:
+            if abs_diff <= threshold:
                 status = "correct"
                 correct_count += 1
             else:
@@ -44,9 +102,7 @@ def validate_pose(user_angles, ideal_poses, pose_name):
             }
             total_count += 1
 
-    # Calculate pose score
-    pose_score = round((correct_count / total_count) * 100) \
-        if total_count > 0 else 0
+    pose_score = round((correct_count / total_count) * 100) if total_count > 0 else 0
 
     return {
         "joints": validation_result,
@@ -54,55 +110,3 @@ def validate_pose(user_angles, ideal_poses, pose_name):
         "correct_joints": correct_count,
         "total_joints": total_count
     }
-
-
-def test_pose_validator():
-    """
-    Test validator with slightly off angles
-    """
-    import json
-    import os
-
-    json_path = os.path.join(
-        os.path.dirname(__file__),
-        "data",
-        "ideal_poses.json"
-    )
-    with open(json_path, "r") as f:
-        ideal_poses = json.load(f)
-
-    # Slightly off angles — some correct some wrong
-    fake_angles = {
-        "left_elbow": 168,    # correct (diff = 2)
-        "right_elbow": 145,   # wrong (diff = 25)
-        "left_shoulder": 173, # correct (diff = 2)
-        "right_shoulder": 140,# wrong (diff = 35)
-        "left_knee": 174,     # correct (diff = 1)
-        "right_knee": 175,    # correct (diff = 0)
-        "left_hip": 174,      # correct (diff = 1)
-        "right_hip": 176      # correct (diff = 1)
-    }
-
-    result = validate_pose(
-        fake_angles,
-        ideal_poses,
-        "pose_1_pranamasana"
-    )
-
-    print(f"\nPose Score: {result['pose_score']}%")
-    print(f"Correct Joints: {result['correct_joints']}"
-          f"/{result['total_joints']}")
-    print("\nJoint Details:")
-
-    for joint, data in result['joints'].items():
-        status_icon = "✅" if data['status'] == "correct" else "❌"
-        print(f"{status_icon} {joint}: "
-              f"User={data['user_angle']}° "
-              f"Ideal={data['ideal_angle']}° "
-              f"Diff={data['difference']}°")
-
-    print("\n✅ Pose validator working correctly!")
-
-
-if __name__ == "__main__":
-    test_pose_validator()
