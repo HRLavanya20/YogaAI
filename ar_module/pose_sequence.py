@@ -34,10 +34,24 @@ class PoseSequenceManager:
         "pose_12_pranamasana_2": "Pose 12 — Pranamasana (Prayer Pose 2)"
     }
 
-    # Score threshold to move to next pose
     PASS_THRESHOLD = 80
-    # How many frames must pass threshold before moving
     FRAMES_TO_PASS = 30
+
+    _LOOSE_HOLD_POSES = [
+        "pose_2_hasta_uttanasana",
+        "pose_3_hasta_padasana",
+        "pose_4_ashwa_sanchalanasana",
+        "pose_5_dandasana",
+        "pose_6_ashtanga_namaskara",
+        "pose_7_bhujangasana",
+        "pose_8_adho_mukha_svanasana",
+        "pose_9_ashwa_sanchalanasana_2",
+        "pose_10_hasta_padasana_2",
+        "pose_11_hasta_uttanasana_2",
+        "pose_12_pranamasana_2",
+    ]
+    POSE_PASS_THRESHOLDS = {pose: 60 for pose in _LOOSE_HOLD_POSES}
+    POSE_FRAMES_TO_PASS = {pose: 15 for pose in _LOOSE_HOLD_POSES}
 
     def __init__(self):
         self.current_index = 0
@@ -45,51 +59,52 @@ class PoseSequenceManager:
         self.session_complete = False
 
     def get_current_pose(self):
-        """Returns current pose name"""
         if self.session_complete:
             return None
         return self.POSE_SEQUENCE[self.current_index]
 
     def get_current_display_name(self):
-        """Returns human readable pose name"""
         pose = self.get_current_pose()
         if pose:
             return self.POSE_DISPLAY_NAMES[pose]
         return "Session Complete!"
 
     def get_progress(self):
-        """Returns progress string like 3/12"""
         return f"{self.current_index + 1}/12"
 
+    def get_pass_threshold(self):
+        pose = self.get_current_pose()
+        return self.POSE_PASS_THRESHOLDS.get(pose, self.PASS_THRESHOLD)
+
+    def get_frames_to_pass(self):
+        pose = self.get_current_pose()
+        return self.POSE_FRAMES_TO_PASS.get(pose, self.FRAMES_TO_PASS)
+
     def update(self, pose_score):
-        """
-        Called every frame with current pose score
-        If score >= threshold for enough frames
-        moves to next pose automatically
-        """
         if self.session_complete:
             return
 
-        if pose_score >= self.PASS_THRESHOLD:
+        pass_threshold = self.get_pass_threshold()
+        frames_to_pass = self.get_frames_to_pass()
+
+        if pose_score >= pass_threshold:
             self.frames_passed += 1
         else:
             self.frames_passed = 0
 
-        if self.frames_passed >= self.FRAMES_TO_PASS:
+        if self.frames_passed >= frames_to_pass:
             self.next_pose()
 
     def next_pose(self):
-        """Move to next pose"""
         self.frames_passed = 0
         self.current_index += 1
 
         if self.current_index >= len(self.POSE_SEQUENCE):
             self.session_complete = True
             self.current_index = len(self.POSE_SEQUENCE) - 1
-            print("✅ Surya Namaskar Complete!")
+            print("Surya Namaskar Complete!")
 
     def reset(self):
-        """Reset session from beginning"""
         self.current_index = 0
         self.frames_passed = 0
         self.session_complete = False
